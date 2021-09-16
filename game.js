@@ -13,6 +13,8 @@ var level = 0;
 // Has the game been started?
 var started = false;
 
+var gameOver = false;
+
 /*
   Advance the user to 1 level up from the current level
     1) Empty userClickedPattern
@@ -89,7 +91,8 @@ function checkAnswer(currentLevel) {
     }, 200);
 
     $("h1").text("Game Over, Press any key to Restart");
-    started = false
+    started = false;
+    gameOver = true;
   }
 }
 
@@ -99,6 +102,7 @@ function checkAnswer(currentLevel) {
 function startOver() {
   level = 0;
   gamePattern = []
+  gameOver = false;
 }
 
 /*
@@ -124,12 +128,12 @@ $(".btn").on("click", function(event) {
       2) change started to true
 */
 $(document).on("keydown", function(event) {
-  if ((!started) && (event.key.toLowerCase() === "a")) {
+  if ((!started) && (event.key.toLowerCase() === "a") && (!gameOver)) {
     setTimeout(function() {
       nextSequence();
     }, 1000);
     started = true;
-  } else if(!started) {
+  } else if((!started) && (gameOver)) {
     startOver();
     nextSequence();
   }
